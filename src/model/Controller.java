@@ -50,5 +50,48 @@ public class Controller {
 		this.projects[indexProject].setManagers(nameGreen, phoneGreen, quantityOfClients, clientNames, clientPhones);
 
 		return "Cambio hecho";
-	}	
+	}
+
+	public int getActualStage(int index){
+		return projects[index].getActualStage();
+	}
+
+	public void modifyStagesDates(int index, int[] durationMonths){
+
+		projects[index].modifyStagesDates(durationMonths);
+
+	}
+
+	public void finishStage(int index){
+		this.projects[index].finishStage();
+	}
+
+	public String consultStagesDates(int index){
+		String msg = projects[index].showStagesDates();
+		return msg;
+	}
+
+	public int getActualStageMadeCapsule(int index){
+		return projects[index].getActualStageMadeCapsule();
+	}
+
+	public void registerCapsule(int index, String situation, int type, String nameCreator, String positionCreator, String lesson){
+        this.projects[index].registerCapsule(situation, type, nameCreator, positionCreator, lesson);
+    }
+
+    public String findCapsule(){
+        for(int i=0; i<createdProjects; i++){
+            if(!(projects[i].findCapsule().equals(""))){
+                return projects[i].findCapsule();
+            }
+        }
+        return "";
+    }
+
+	public void acceptCapsule(int decision){
+		for(int i=0;i<createdProjects;i++){
+			projects[i].acceptCapsule(decision);
+		}
+	}
+
 }

@@ -40,6 +40,22 @@ public class Main{
 					view.addManagers();
 					break;
 
+				case 4:
+					view.registerStages();
+					break;
+				
+				case 5:
+					view.finishStage();
+					break;
+
+				case 6:
+					view.createCapsule();
+					break;
+
+				case 7:
+					view.acceptCapsule();
+					break;
+
 				default:
 					System.out.println("No valido");
 					break;
@@ -52,6 +68,10 @@ public class Main{
         System.out.println("1. Crear Proyecto");
 		System.out.println("2. consultar información del proyecto");
 		System.out.println("3. añadir gerentes");
+		System.out.println("4. Registrar fechas de etapas");
+		System.out.println("5. Culminar etapa");
+		System.out.println("6. crear capsula");
+		System.out.println("7. Aceptar capsula");
     }
 
     public void RegisterProject() {
@@ -65,14 +85,14 @@ public class Main{
 			double budget = reader.nextDouble();
 
 			System.out.println("Inserte fecha de inicio");
-			System.out.print("año : ");
-			int startYear = reader.nextInt();
+			System.out.print("dia : ");
+			int startDay = reader.nextInt();
 			System.out.println("");
 			System.out.print("mes : ");
 			int startMonth = reader.nextInt();
 			System.out.println("");
-			System.out.print("dia : ");
-			int startDay = reader.nextInt();
+			System.out.print("año : ");
+			int startYear = reader.nextInt();
 			System.out.println("");
 			Calendar start = Calendar.getInstance();
 			start.set(Calendar.YEAR, startYear);
@@ -80,14 +100,15 @@ public class Main{
 			start.set(Calendar.DAY_OF_MONTH, startDay);
 
 			System.out.println("Inserte fecha de fin");
-			System.out.print("año : ");
-			int endYear = reader.nextInt();
+			System.out.print("dia : ");
+			int endDay = reader.nextInt();
 			System.out.println("");
 			System.out.print("mes : ");
 			int endMonth = reader.nextInt();
 			System.out.println("");
-			System.out.print("dia : ");
-			int endDay = reader.nextInt();
+			System.out.print("año : ");
+			int endYear = reader.nextInt();
+			System.out.println("");
 			Calendar end = Calendar.getInstance();
 			end.set(Calendar.YEAR, endYear);
 			end.set(Calendar.MONTH, endMonth);
@@ -107,6 +128,7 @@ public class Main{
 		System.out.println("¿Que quieres consultar?");
 		System.out.println("1. Informacion general");
 		System.out.println("2. Información de los clientes");
+		System.out.println("3. consultar fechas de proyecto");
 
 		int decision = reader.nextInt();
 
@@ -114,10 +136,16 @@ public class Main{
 			case 1:
 				System.out.println(controller.consultInformationProject(index));
 				reader.nextLine();
+				System.out.println("\nEsta en la etapa: " + (controller.getActualStage(index)+1));
 				break;
 			
 			case 2:
 				System.out.println(controller.consultPeopleOfProject(index));
+				reader.nextLine();
+				break;
+
+			case 3:
+				System.out.println(controller.consultStagesDates(index));
 				reader.nextLine();
 				break;
 
@@ -159,4 +187,68 @@ public class Main{
 		System.out.println(msg);
 		reader.next();	
 	}
+
+	public void registerStages(){
+		int index=selectProject();
+		if(controller.getActualStage(index)==0){
+			int[] meses = new int[6];
+			for(int i=0; i<6; i++){
+				System.out.println("Inserte lo que tardara la etapa no." + (i+1) + " en meses");
+				meses[i] = reader.nextInt();
+			}
+			controller.modifyStagesDates(index, meses);
+
+		}else{
+			System.out.println("Ya estan definidas las fechas");
+		}
+		System.out.println("Cambio hecho");
+
+	}
+
+	public void finishStage(){
+		int index = selectProject();
+		if(controller.getActualStage(index)>5){
+			System.out.println("Ya terminó");
+		}
+		else{
+			controller.finishStage(index);
+		}
+	}
+
+	public void createCapsule(){
+		int index = selectProject();
+		if(controller.getActualStageMadeCapsule(index)<50){
+			System.out.println("Inserte el nombre del creador de la capsula");
+			String name=reader.next();
+			System.out.println("Inserte su rol");
+			String rol = reader.next();
+			System.out.println("Inserte el tipo (1. tecnico / 2. gestion / 3. dominio / 4. experiencias)");
+			int type = reader.nextInt();
+			System.out.println("Inserte la descripción");
+			String description = reader.nextLine();
+			reader.nextLine();
+			System.out.println("Inserte la lección aprendida");
+			String lesson = reader.nextLine();
+
+			controller.registerCapsule(index, description, type, name, rol, lesson);
+			}
+		else{
+			System.out.println("Limite alcanzado");
+		}
+	}
+
+	public void acceptCapsule(){
+		String msg = controller.findCapsule();
+		System.out.println(msg);
+
+		if(!(msg.equals(""))){
+			System.out.println("¿aceptar? \n1. no / 2. si");
+			int decision = reader.nextInt();
+			controller.acceptCapsule(decision);
+		}
+		else{
+			System.out.println("No hay más capsulas");
+		}
+	}
+
 }
