@@ -19,6 +19,8 @@ public class Main{
         Main view = new Main();
 
         System.out.println("Bienvenido a la version preliminar del gestor de proyectos y capsulas de GreenSQA");
+		System.out.println("Para empezar cree un proyecto");
+		view.RegisterProject();
         int option=0;
         	do{
 			view.menu();
@@ -37,22 +39,18 @@ public class Main{
 					break;
 
 				case 3:
-					view.addManagers();
-					break;
-
-				case 4:
 					view.registerStages();
 					break;
 				
-				case 5:
+				case 4:
 					view.finishStage();
 					break;
 
-				case 6:
+				case 5:
 					view.createCapsule();
 					break;
 
-				case 7:
+				case 6:
 					view.acceptCapsule();
 					break;
 
@@ -66,12 +64,11 @@ public class Main{
     public void menu(){
         System.out.println("0. Salir");
         System.out.println("1. Crear Proyecto");
-		System.out.println("2. consultar información del proyecto");
-		System.out.println("3. añadir gerentes");
-		System.out.println("4. Registrar fechas de etapas");
-		System.out.println("5. Culminar etapa");
-		System.out.println("6. crear capsula");
-		System.out.println("7. Aceptar capsula");
+		System.out.println("2. Consultar información del proyecto");
+		System.out.println("3. Registrar fechas de etapas");
+		System.out.println("4. Culminar etapa");
+		System.out.println("5. Crear capsula");
+		System.out.println("6. Aceptar capsula");
     }
 
     public void RegisterProject() {
@@ -99,22 +96,25 @@ public class Main{
 			start.set(Calendar.MONTH, startMonth);
 			start.set(Calendar.DAY_OF_MONTH, startDay);
 
-			System.out.println("Inserte fecha de fin");
-			System.out.print("dia : ");
-			int endDay = reader.nextInt();
-			System.out.println("");
-			System.out.print("mes : ");
-			int endMonth = reader.nextInt();
-			System.out.println("");
-			System.out.print("año : ");
-			int endYear = reader.nextInt();
-			System.out.println("");
-			Calendar end = Calendar.getInstance();
-			end.set(Calendar.YEAR, endYear);
-			end.set(Calendar.MONTH, endMonth);
-			end.set(Calendar.DAY_OF_MONTH, endDay); 
 
-			controller.CreateProject(nameProject, nameClient, start, end, budget);
+			System.out.println("Inserte nombre del gerente de GreenSQA");
+			reader.next();
+			String nameGreen = reader.nextLine();
+			System.out.println("Inserte telefono del gerente de GreenSQA");
+			String phoneGreen = reader.nextLine();
+
+			System.out.println("Inserte nombre del cliente");
+			String ClientManagerName = reader.nextLine();
+			System.out.println("Inserte el telefono del cliente");
+			String phoneClient = reader.nextLine();
+
+			int[] eachStageDuration = new int[6];
+			for(int i=0;i<6;i++){
+				System.out.println("Cuanto dura la etapa numero " + (1+i));
+				eachStageDuration[i]=reader.nextInt();
+			}
+
+			controller.CreateProject(nameProject, nameClient, start, budget, nameGreen, phoneGreen, ClientManagerName, phoneClient, eachStageDuration);
 		}
 		else{
 			System.out.println("Cantidad de proyectos lleno");
@@ -128,7 +128,7 @@ public class Main{
 		System.out.println("¿Que quieres consultar?");
 		System.out.println("1. Informacion general");
 		System.out.println("2. Información de los clientes");
-		System.out.println("3. consultar fechas de proyecto");
+		System.out.println("3. consultar fechas de etapas del proyecto");
 
 		int decision = reader.nextInt();
 
@@ -159,33 +159,6 @@ public class Main{
 		System.out.println(controller.showProjects());
 		int indexProject = reader.nextInt() - 1;
 		return indexProject;
-	}
-
-	public void addManagers(){
-
-		int index=selectProject();
-
-		System.out.println("Inserte nombre del gerente de GreenSQA");
-		String nameGreen = reader.next();
-		System.out.println("Inserte telefono del gerente de GreenSQA");
-		String phoneGreen = reader.next();
-		
-		System.out.println("¿Cuantos gerentes del cliente son?");
-		int quantityClients = reader.nextInt();
-
-		String[] nameClients = new String[quantityClients];
-		String[] phoneClients = new String[quantityClients];
-
-		for(int i=0;i<(quantityClients);i++){
-			System.out.println("Inserte nombre del gerente del cliente no." + (i+1));
-			nameClients[i] = reader.next();
-			System.out.println("Inserte telefono del gerente del cliente no." + (i+1));
-			phoneClients[i] = reader.next();
-		}
-
-		String msg = controller.setManagers(index, nameGreen, phoneGreen, quantityClients, nameClients, phoneClients);
-		System.out.println(msg);
-		reader.next();	
 	}
 
 	public void registerStages(){

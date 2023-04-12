@@ -8,7 +8,6 @@ import java.text.ParseException;
 
 public class Stage{
 
-	private Calendar startDate;
     private Calendar endDate;
 
     private Capsule[] capsules;
@@ -16,17 +15,10 @@ public class Stage{
 
     private Calendar realEndDate;
 
-	public Stage(Calendar startDate){
-        this.startDate=Calendar.getInstance();
-        this.startDate=startDate;
-        this.endDate = Calendar.getInstance();
-
-        this.realEndDate = Calendar.getInstance();
+	public Stage(Calendar endDate){
+        this.endDate = (Calendar) endDate.clone();
 
         capsules=new Capsule[50];
-        /*for(int i=0; i<50; i++){
-            capsules[i] = new Capsule();
-        }*/
         this.madeCapsules=0;
 	}
 

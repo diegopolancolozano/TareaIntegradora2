@@ -15,9 +15,9 @@ public class Controller {
 
 	}
 
-    public void CreateProject(String nameP, String nameC, Calendar start, Calendar end, double budget){
+    public void CreateProject(String nameP, String nameC, Calendar start, double budget, String nameGreen, String phoneGreen, String nameClient, String phoneClient, int[] eachStageDuration){
         if(this.createdProjects<10){
-			this.projects[this.createdProjects] = new Project(nameP, nameC, start, end, budget);
+			this.projects[this.createdProjects] = new Project(nameP, nameC, start, budget, nameGreen, phoneGreen, nameClient, phoneClient, eachStageDuration);
 			this.createdProjects+=1;
 		}
     }
@@ -43,13 +43,6 @@ public class Controller {
 	public String consultPeopleOfProject(int index){
 		String msg = projects[index].getPeople();
 		return msg;
-	}
-
-	public String setManagers(int indexProject, String nameGreen, String phoneGreen, int quantityOfClients, String[] clientNames, String[] clientPhones){
-
-		this.projects[indexProject].setManagers(nameGreen, phoneGreen, quantityOfClients, clientNames, clientPhones);
-
-		return "Cambio hecho";
 	}
 
 	public int getActualStage(int index){

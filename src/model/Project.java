@@ -16,8 +16,7 @@ public class Project{
 	private double budget;
     private int actualStage;
 
-	private int quantityOfClients;
-	private Person[] clients;
+	private Person clientManager;
 	private Person greenManager;
 
 	private DateFormat formatter;
@@ -28,28 +27,40 @@ public class Project{
 
 	private int stageCreated; 
 
-	public Project(String nameP, String nameC, Calendar start, Calendar end, double budget){
+	public Project(String nameP, String nameC, Calendar start, double budget, String nameGreen, String phoneGreen, String nameClientManager, String phoneClient, int[] eachStageDuration){
 
 		this.name = nameP;	
 		this.clientName = nameC;
 		this.initialDate = start;
-		this.finalDate = end;
 		this.budget = budget;
         this.actualStage = 0;
 
-		this.greenManager=new Person();
+		this.greenManager=new Person(nameGreen, phoneClient);
+		this.clientManager=new Person(nameClientManager, phoneClient);
 
 		this.formatter = new SimpleDateFormat("dd/MM/yy");
-		this.startString = formatter.format(this.initialDate.getTime());
-		this.endString = formatter.format(this.finalDate.getTime());
 
 		this.stageCreated = 0;
 
 		this.stages = new Stage[6];
-		for(int i=0; i<6;i++){
-			this.stages[i] = new Stage(this.initialDate);
-			}
+
+		Calendar tempDate = Calendar.getInstance();
+		tempDate=(Calendar) initialDate.clone();
+		tempDate.add(Calendar.MONTH, eachStageDuration[0]-1);
+		stages[0] = new Stage(tempDate);
+
+		for(int i=1; i<6;i++){
+			Calendar temporalDate = Calendar.getInstance();
+			temporalDate= (Calendar) stages[i-1].getEndDate().clone();
+			temporalDate.add(Calendar.MONTH, eachStageDuration[i]);
+			this.stages[i] = new Stage(temporalDate);
 		}
+
+		this.finalDate = stages[5].getEndDate();
+
+		this.startString = formatter.format(this.initialDate.getTime());
+		this.endString = formatter.format(this.finalDate.getTime());
+	}
 
 	public String getName(){
 		return this.name;
@@ -63,33 +74,10 @@ public class Project{
 		return this.budget;
 	}
 
-	public int getQuantityOfClients(){
-		return this.quantityOfClients;
-	}
-
-	public String setManagers(String nameGreen, String phoneGreen, int quantityOfClients, String[] clientNames, String[] clientPhones){
-		greenManager.setName(nameGreen);
-		greenManager.setPhone(phoneGreen);
-
-		this.quantityOfClients=quantityOfClients;
-
-		this.clients = new Person[quantityOfClients];
-
-		for(int i=0;i<quantityOfClients;i++){
-			this.clients[i] = new Person(clientNames[i], clientPhones[i]);
-		}
-
-		return "Cambio hecho";
-	}
-
 	public String getPeople(){
-		String msg="No se han añadido";
-		if(quantityOfClients!=0){
-			for(int i=0; i<quantityOfClients; i++){
-				msg = "De green esta el gerente: " + greenManager.getName() + " de telefono: " + greenManager.getPhoneNumber() + "\n y del cliente esta: \n";
-				msg = msg + clients[i].getName() + " de telefono: " + clients[i].getPhoneNumber() + "\n";
-			}
-		}
+		String msg="";
+		msg = "De green esta el gerente: " + greenManager.getName() + " de telefono: " + greenManager.getPhoneNumber() + "\ny del cliente esta: \n";
+		msg = msg + clientManager.getName() + " de telefono: " + clientManager.getPhoneNumber() + "\n";
 		return msg;
 	}
 
@@ -123,7 +111,7 @@ public class Project{
 	public String showStagesDates(){
 		String msg = "";
 		for(int i=0; i<6; i++){
-			msg = msg + "Etapa " + i + ". fecha planificada: " + formatter.format(stages[i].getEndDate().getTime()) + ". y fecha real: " + formatter.format(stages[i].getRealEndDate().getTime()) + "\n";
+			msg = msg + "Etapa " + (i+1) + ". fecha planificada de fin: " + formatter.format(stages[i].getEndDate().getTime()) + ".\n";
 		}
 		return msg;
 	}
