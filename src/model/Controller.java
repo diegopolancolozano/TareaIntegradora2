@@ -2,6 +2,7 @@ package model;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.ArrayList;
 
 public class Controller {
 
@@ -49,11 +50,11 @@ public class Controller {
 		return projects[index].getActualStage();
 	}
 
-	public void modifyStagesDates(int index, int[] durationMonths){
+	/*public void modifyStagesDates(int index, int[] durationMonths){
 
 		projects[index].modifyStagesDates(durationMonths);
 
-	}
+	}*/
 
 	public void finishStage(int index){
 		this.projects[index].finishStage();
@@ -68,8 +69,8 @@ public class Controller {
 		return projects[index].getActualStageMadeCapsule();
 	}
 
-	public void registerCapsule(int index, String situation, int type, String nameCreator, String positionCreator, String lesson){
-        this.projects[index].registerCapsule(situation, type, nameCreator, positionCreator, lesson);
+	public void registerCapsule(int index, String situation, int type, String nameCreator, String positionCreator, String lesson, ArrayList<String> keywords){
+        this.projects[index].registerCapsule(situation, type, nameCreator, positionCreator, lesson, keywords);
     }
 
     public String findCapsule(){

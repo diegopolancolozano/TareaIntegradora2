@@ -1,49 +1,44 @@
 package model;
 
+import java.util.ArrayList;
+
 public class Capsule{
 
 	private String id;
     private String situation;
-    private int type;
+    private type typeCapsule;
     private String nameCreator;
     private String positionCreator;
     private String lesson;
 
     private int approved;
 
-    private String[] keyWords;
+    private ArrayList<String> keyWords;
 
-    /*public Capsule(){
-
-        this.situation="vacio";
-        this.type=0;
-        this.nameCreator="vacio";
-        this.positionCreator="";
-        this.lesson="";
-        this.approved=0;
-
-    }
-
-	public void setCapsule(String situation, int type, String name, String positionCreator, String lesson){
+    public Capsule(String situation, int typee, String name, String positionCreator, String lesson, ArrayList<String> keyWords){
 
         this.situation=situation;
-        this.type=type;
+        switch(typee){
+            case 1:
+                typeCapsule=type.TECNICO;
+                break;
+            case 2:
+                typeCapsule=type.GESTION;
+                break;
+            case 3:
+                typeCapsule=type.DOMINIO;
+                break;
+            case 4:
+                typeCapsule=type.EXPERIENCIAS;
+                break;
+        }
         this.nameCreator=name;
         this.positionCreator=positionCreator;
         this.lesson=lesson;
-        System.out.println(nameCreator + "name");
-	}*/
-
-    public Capsule(String situation, int type, String name, String positionCreator, String lesson){
-
-        this.situation=situation;
-        this.type=type;
-        this.nameCreator=name;
-        this.positionCreator=positionCreator;
-        this.lesson=lesson;
-        System.out.println(nameCreator + "name");
         this.approved=0;
 
+        this.keyWords= new ArrayList<String>();
+        this.keyWords.addAll(keyWords);
     }
 
     public String getCapsule(){

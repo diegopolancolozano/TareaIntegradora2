@@ -3,6 +3,7 @@ package model;
 import java.util.Calendar;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 import java.text.ParseException;
 
@@ -46,7 +47,7 @@ public class Project{
 
 		Calendar tempDate = Calendar.getInstance();
 		tempDate=(Calendar) initialDate.clone();
-		tempDate.add(Calendar.MONTH, eachStageDuration[0]-1);
+		tempDate.add(Calendar.MONTH, (eachStageDuration[0]-1));
 		stages[0] = new Stage(tempDate);
 
 		for(int i=1; i<6;i++){
@@ -89,7 +90,7 @@ public class Project{
 		return this.endString;
 	}
 
-	public void modifyStagesDates(int[] durationMonths){
+	/*public void modifyStagesDates(int[] durationMonths){
 		Calendar acumulated = (Calendar) initialDate.clone();
 		if(this.actualStage==0){
 			this.actualStage=1;
@@ -98,13 +99,14 @@ public class Project{
 				acumulated.add(Calendar.MONTH, durationMonths[i]);
 			}
 		}
-	}
+	}*/
 
 	public int getActualStage(){
 		return this.actualStage;
 	}
 
 	public void finishStage(){
+		this.stages[actualStage].setRealEndDate();
 		this.actualStage=this.actualStage+1;
 	}
 
@@ -120,8 +122,8 @@ public class Project{
 		return stages[this.actualStage].getMadeCapsules();
 	}
 
-	public void registerCapsule(String situation, int type, String nameCreator, String positionCreator, String lesson){
-        this.stages[this.stageCreated].registerCapsule(situation, type, nameCreator, positionCreator, lesson);
+	public void registerCapsule(String situation, int type, String nameCreator, String positionCreator, String lesson, ArrayList<String> keywords){
+        this.stages[this.stageCreated].registerCapsule(situation, type, nameCreator, positionCreator, lesson, keywords);
 		this.stageCreated+=1;
     }
 

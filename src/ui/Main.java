@@ -1,8 +1,10 @@
 package ui;
 
 import java.util.Scanner;
-import model.Controller;
+import java.util.ArrayList;
 import java.util.Calendar;
+
+import model.Controller;
 
 public class Main{
 
@@ -39,18 +41,14 @@ public class Main{
 					break;
 
 				case 3:
-					view.registerStages();
-					break;
-				
-				case 4:
 					view.finishStage();
 					break;
 
-				case 5:
+				case 4:
 					view.createCapsule();
 					break;
 
-				case 6:
+				case 5:
 					view.acceptCapsule();
 					break;
 
@@ -65,10 +63,9 @@ public class Main{
         System.out.println("0. Salir");
         System.out.println("1. Crear Proyecto");
 		System.out.println("2. Consultar información del proyecto");
-		System.out.println("3. Registrar fechas de etapas");
-		System.out.println("4. Culminar etapa");
-		System.out.println("5. Crear capsula");
-		System.out.println("6. Aceptar capsula");
+		System.out.println("3. Culminar etapa");
+		System.out.println("4. Crear capsula");
+		System.out.println("5. Aceptar capsula");
     }
 
     public void RegisterProject() {
@@ -156,12 +153,16 @@ public class Main{
 	}
 
 	public int selectProject(){
-		System.out.println(controller.showProjects());
-		int indexProject = reader.nextInt() - 1;
+		int indexProject;
+		do{
+			System.out.println(controller.showProjects());
+			indexProject = reader.nextInt() - 1;
+		}while(indexProject>controller.getCreatedProjects() && !(indexProject<0));
+
 		return indexProject;
 	}
 
-	public void registerStages(){
+	/*public void registerStages(){
 		int index=selectProject();
 		if(controller.getActualStage(index)==0){
 			int[] meses = new int[6];
@@ -176,7 +177,7 @@ public class Main{
 		}
 		System.out.println("Cambio hecho");
 
-	}
+	}*/
 
 	public void finishStage(){
 		int index = selectProject();
@@ -185,6 +186,7 @@ public class Main{
 		}
 		else{
 			controller.finishStage(index);
+			System.out.println("Se guardarón los cambios");
 		}
 	}
 
@@ -192,18 +194,32 @@ public class Main{
 		int index = selectProject();
 		if(controller.getActualStageMadeCapsule(index)<50){
 			System.out.println("Inserte el nombre del creador de la capsula");
-			String name=reader.next();
+			reader.nextLine();
+			String name=reader.nextLine();
 			System.out.println("Inserte su rol");
-			String rol = reader.next();
+			String rol = reader.nextLine();
 			System.out.println("Inserte el tipo (1. tecnico / 2. gestion / 3. dominio / 4. experiencias)");
 			int type = reader.nextInt();
+			reader.nextLine();
 			System.out.println("Inserte la descripción");
 			String description = reader.nextLine();
-			reader.nextLine();
 			System.out.println("Inserte la lección aprendida");
 			String lesson = reader.nextLine();
 
-			controller.registerCapsule(index, description, type, name, rol, lesson);
+			ArrayList<String> keywords = new ArrayList<>();
+            String[] words = description.split(" ");
+            for (String word : words) {
+                if (word.startsWith("#") && word.endsWith("#")) {
+                    String keyword = word.substring(1, word.length() - 1);
+                    keywords.add(keyword);
+                }
+            }
+			if(keywords.size()==0){
+				System.out.println("No se pudo efectuar, pues faltan palabras clave");
+				System.out.println("recuerde que las palabras clave están entre  el simbolo hashtag(#)");
+			} else{
+				controller.registerCapsule(index, description, type, name, rol, lesson, keywords);
+			}
 			}
 		else{
 			System.out.println("Limite alcanzado");
