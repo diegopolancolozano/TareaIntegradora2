@@ -50,12 +50,6 @@ public class Controller {
 		return projects[index].getActualStage();
 	}
 
-	/*public void modifyStagesDates(int index, int[] durationMonths){
-
-		projects[index].modifyStagesDates(durationMonths);
-
-	}*/
-
 	public void finishStage(int index){
 		this.projects[index].finishStage();
 	}
@@ -88,4 +82,45 @@ public class Controller {
 		}
 	}
 
+	public int amountCapsulesPerType(int type){
+		int sum=0;
+		switch(type){
+			case 1:
+			for(int i=0; i<createdProjects; i++){
+				sum+=projects[i].getAmountTecnico();
+			}
+			return sum;
+			case 2:
+			for(int i=0; i<createdProjects; i++){
+				sum+=projects[i].getAmountGestion();
+			}
+			return sum;
+			case 3:
+			for(int i=0; i<createdProjects; i++){
+				sum+=projects[i].getAmountDominio();
+			}
+			return sum;
+			case 4:
+			for(int i=0; i<createdProjects; i++){
+				sum+=projects[i].getAmountExperiencias();
+			}
+			return sum;
+			case 5:
+			for(int i=0; i<createdProjects; i++){
+				sum+=projects[i].totalCapsules();
+			}
+			return sum;
+		}
+		return sum;
+	}
+
+	public int getMadeCapsulesOfStage(int indexProject, int stageSelected){
+		return projects[indexProject].getStageMadeCapsule(stageSelected);
+	}
+
+	public ArrayList<String> findGroupOfLessons(int index, int stage) {
+		ArrayList<String> allCapsules = new ArrayList<String>();
+		allCapsules = (ArrayList<String>) projects[index].findGroupOfLessons(stage).clone();
+		return allCapsules;
+	}
 }

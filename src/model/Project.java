@@ -26,7 +26,10 @@ public class Project{
 
 	private Stage[] stages;
 
-	private int stageCreated; 
+	private int amountTecnico;
+	private int amountGestion;
+	private int amountDominio;
+	private int amountExperiencias;
 
 	public Project(String nameP, String nameC, Calendar start, double budget, String nameGreen, String phoneGreen, String nameClientManager, String phoneClient, int[] eachStageDuration){
 
@@ -40,8 +43,6 @@ public class Project{
 		this.clientManager=new Person(nameClientManager, phoneClient);
 
 		this.formatter = new SimpleDateFormat("dd/MM/yy");
-
-		this.stageCreated = 0;
 
 		this.stages = new Stage[6];
 
@@ -61,6 +62,11 @@ public class Project{
 
 		this.startString = formatter.format(this.initialDate.getTime());
 		this.endString = formatter.format(this.finalDate.getTime());
+
+		amountTecnico=0;
+		amountGestion=0;
+		amountDominio=0;
+		amountExperiencias=0;
 	}
 
 	public String getName(){
@@ -90,17 +96,6 @@ public class Project{
 		return this.endString;
 	}
 
-	/*public void modifyStagesDates(int[] durationMonths){
-		Calendar acumulated = (Calendar) initialDate.clone();
-		if(this.actualStage==0){
-			this.actualStage=1;
-			for(int i=0;i<6;i++){
-				stages[i].setEndDate(acumulated, durationMonths[i]);
-				acumulated.add(Calendar.MONTH, durationMonths[i]);
-			}
-		}
-	}*/
-
 	public int getActualStage(){
 		return this.actualStage;
 	}
@@ -122,13 +117,32 @@ public class Project{
 		return stages[this.actualStage].getMadeCapsules();
 	}
 
+	public int getStageMadeCapsule(int stage){
+		return stages[stage].getMadeCapsules();
+	}
+
 	public void registerCapsule(String situation, int type, String nameCreator, String positionCreator, String lesson, ArrayList<String> keywords){
-        this.stages[this.stageCreated].registerCapsule(situation, type, nameCreator, positionCreator, lesson, keywords);
-		this.stageCreated+=1;
+		switch (type){
+			case 1 :
+				this.amountTecnico=amountTecnico+1;
+				break;
+			case 2 :
+				this.amountGestion=amountGestion+1;
+				break;
+			case 3 :
+				this.amountDominio=amountDominio+1;
+				break;
+			case 4 :
+				this.amountExperiencias=amountExperiencias+1;
+				break;
+				default:
+				break;
+		}
+		this.stages[this.actualStage].registerCapsule(situation, type, nameCreator, positionCreator, lesson, keywords);
     }
 
     public String findCapsule(){
-        for(int i=0; i<=stageCreated; i++){
+        for(int i=0; i<=actualStage; i++){
             if(!((stages[i].findCapsule()).equals(""))){
 				return stages[i].findCapsule();
             }
@@ -137,8 +151,35 @@ public class Project{
     }
 
 	public void acceptCapsule(int decision){
-		for(int i=0;i<=stageCreated;i++){
-			stages[i].acceptCapsule(decision);
+		for(int i=0;i<=actualStage;i++){
+			stages[i].acceptCapsule(decision, name, actualStage);
 		}
 	}
+
+	public int getAmountTecnico(){
+		return amountTecnico;
+	}
+
+	public int getAmountGestion(){
+		return amountGestion;
+	}
+
+	public int getAmountDominio(){
+		return amountDominio;
+	}
+
+	public int getAmountExperiencias(){
+		return amountExperiencias;
+	}
+
+	public int totalCapsules(){
+		return amountDominio+amountExperiencias+amountGestion+amountTecnico;
+	}
+
+	public ArrayList<String> findGroupOfLessons(int stage) {
+		ArrayList<String> allCapsules = new ArrayList<String>();
+        allCapsules = (ArrayList<String>) stages[stage].findGroupOfLessons().clone();
+		return allCapsules;
+	}
+
 }

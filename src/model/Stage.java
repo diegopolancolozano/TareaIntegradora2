@@ -23,12 +23,6 @@ public class Stage{
         this.madeCapsules=0;
 	}
 
-    /*public void setEndDate(Calendar startDate, int durationMonths){
-        this.endDate=(Calendar) startDate.clone();
-        endDate.add(Calendar.MONTH, durationMonths);
-        this.realEndDate=(Calendar) realEndDate.clone();
-    }*/
-
     public Calendar getEndDate(){
         return endDate;
     }
@@ -42,7 +36,7 @@ public class Stage{
     }
 
     public void registerCapsule(String situation, int type, String name, String positionCreator, String lesson, ArrayList<String> keywords){
-        this.capsules[(this.madeCapsules)] =new Capsule(situation, type, name, positionCreator, lesson, keywords);
+        this.capsules[this.madeCapsules] =new Capsule(situation, type, name, positionCreator, lesson, keywords);
         this.madeCapsules= this.madeCapsules+1;
     }
 
@@ -50,10 +44,10 @@ public class Stage{
         return madeCapsules;
     }
 
-    public void acceptCapsule(int decision){
+    public void acceptCapsule(int decision, String name, int actualStage){
 		for(int i=0; i<madeCapsules;i++){
 			if(capsules[i].getAproved()<1){
-				capsules[i].setAproved(decision);
+				capsules[i].setAproved(decision, name, actualStage, i);
 			}
 		}
 	}
@@ -66,4 +60,12 @@ public class Stage{
         }
         return "";
     }
+
+    public ArrayList<String> findGroupOfLessons() {
+		ArrayList<String> allCapsules = new ArrayList<String>();
+        for(int i=0; i<madeCapsules; i++){
+            allCapsules.add(capsules[i].getCapsule());
+        }
+		return allCapsules;
+	}
 }

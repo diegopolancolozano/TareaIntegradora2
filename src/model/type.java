@@ -1,5 +1,5 @@
 package model;
 
-public enum type {
+public enum Type {
     TECNICO, GESTION, DOMINIO, EXPERIENCIAS
 }
